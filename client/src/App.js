@@ -9,7 +9,16 @@ import Navbar from './components/Navbar';
 
 function App() {
   const client = new ApolloClient({
-    uri: 'http://localhost:3001/graphql'
+    request: operation => {
+      const token = localStorage.getItem('id_token');
+
+      operation.setContext({
+        headers: {
+          authorization: token ? `Bearer ${ token }` : ''
+        }
+      });
+    },
+    uri: '/graphql'
   });
 
   return (
